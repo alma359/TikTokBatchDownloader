@@ -18,7 +18,7 @@ if __name__ == '__main__':
         print("start downloading videos for " + username)
         try:
             a_user_video_downloaded = False
-            user_videos = api.byUsername(username, count=2000)
+            user_videos = api.by_username(username, count=2000)
             if len(user_videos) == 0:
                 print("No videos found by", username)
             else:

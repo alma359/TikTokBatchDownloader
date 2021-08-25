@@ -3,9 +3,6 @@ from selenium import webdriver
 import requests, time, sys, os, re, math, random
 from random import randrange
 from os.path import exists
-from selenium.webdriver.firefox.options import Options
-options = Options()
-options.add_argument("--headless")
 
 if __name__ == '__main__':
     usernames = ['tiktok']
@@ -23,7 +20,10 @@ if __name__ == '__main__':
                 print("No videos found by", username)
             else:
                 print(len(user_videos), "videos found.")
-                browser = webdriver.Firefox(options=options)
+                options = webdriver.ChromeOptions()
+                options.add_argument('headless')
+                chromedriver_path = os.path.abspath(os.getcwd()) + '/chromedriver'
+                browser = webdriver.Chrome(chromedriver_path, options=options)
                 browser.set_script_timeout(36000)
                 for tiktok in user_videos:
                     tiktok_id = tiktok["id"]
@@ -37,7 +37,6 @@ if __name__ == '__main__':
                         print("now waiting " + str(seconds_to_sleep) + " secs for the page to load")
                         time.sleep(seconds_to_sleep)
                         result = browser.page_source
-                        #print(result)
                         all_urls_found = re.findall(r'(https?://[^\s]+)', result)
                         final_url = ''
                         for url in all_urls_found:
@@ -50,7 +49,10 @@ if __name__ == '__main__':
 
                         if final_url == '':
                             raise ValueError('url not found!')
-                        print("the current url is:")
+                        else:
+                            final_url += '&hd=1' # make sure hd version is downloaded
+
+                        print("the current url for downloading is:")
                         print(final_url)
                         r = requests.get(final_url)
                         with open(file_path, 'wb') as f:

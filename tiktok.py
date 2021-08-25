@@ -14,7 +14,7 @@ if __name__ == '__main__':
             os.mkdir(username)
         print("start downloading videos for " + username)
         try:
-            a_user_video_downloaded = False
+            user_videos_downloaded_count = 0
             user_videos = api.by_username(username, count=2000)
             if len(user_videos) == 0:
                 print("No videos found by", username)
@@ -29,7 +29,7 @@ if __name__ == '__main__':
                     tiktok_id = tiktok["id"]
                     file_path = username + "/"+ tiktok_id + ".mp4"
                     if (exists(file_path)):
-                        print("this file is already downloaded...")
+                        print(tiktok_id + ".mp4 is already downloaded...")
                     else:
                         print("attempting to download id: " + tiktok_id)
                         browser.get('https://godownloader.com/tiktok/' + tiktok_id)
@@ -58,16 +58,20 @@ if __name__ == '__main__':
                         with open(file_path, 'wb') as f:
                             f.write(r.content)
                         print("id " + tiktok_id + " was downloaded successfully")
-                        a_user_video_downloaded = True
+                        user_videos_downloaded_count = user_videos_downloaded_count + 1
+                        seconds_to_sleep = 1 + randrange(3)
+                        print('now waiting ' + str(seconds_to_sleep) + ' secs, to avoid godownloader from refusing the next connection')
+                        time.sleep(seconds_to_sleep)
                 print("videos for " + username + " are all done!")
                 tiktok_limit = tiktok_limit + 1
-                if tiktok_limit % 2 == 0:
-                    if a_user_video_downloaded:
-                        seconds_to_sleep = 10 + randrange(30)
-                    else:
-                        seconds_to_sleep = 120 + randrange(45)
-                    print('now waiting ' + str(seconds_to_sleep) + ' secs, to avoid tiktok from refusing the next connection')
-                    time.sleep(seconds_to_sleep)
+                if (tiktok_limit < len(usernames)):
+                    if tiktok_limit % 2 == 0:
+                        seconds_to_sleep = 120 + randrange(45) - (user_videos_downloaded_count * 10)
+                        if (seconds_to_sleep > 0):
+                            print('now waiting ' + str(seconds_to_sleep) + ' secs, to avoid tiktok from refusing the next connection')
+                            time.sleep(seconds_to_sleep)
+                else:
+                    print('Everything is downloaded. Goodbye!')
                 browser.quit()
         except Exception as e:
             print(e)

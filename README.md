@@ -20,7 +20,7 @@ pip3 install selenium
 Install Chrome browser!
 
 4.
-Download newest version of Chromedriver from here https://sites.google.com/chromium.org/driver/downloads and put it into the same directory as the script ```tiktok.py```
+Download Chromedriver for your chrome browser version from here https://sites.google.com/chromium.org/driver/downloads and put it into the same directory as the script ```tiktok.py```
 
 ---
 Usage:

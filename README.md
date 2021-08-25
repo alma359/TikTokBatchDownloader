@@ -17,10 +17,10 @@ pip3 install selenium
 ```
 
 3.
-Install Firefox browser!
+Install Chrome browser!
 
 4.
-Download newest version of Geckodriver from here https://github.com/mozilla/geckodriver/releases and put it into ```/usr/local/bin``` folder for MacOS!
+Download newest version of Chromedriver from here https://sites.google.com/chromium.org/driver/downloads and put it into the same directory as the script ```tiktok.py```
 
 ---
 Usage:
